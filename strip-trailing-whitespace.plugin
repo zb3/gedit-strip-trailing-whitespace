@@ -1,0 +1,10 @@
+[Plugin]
+Loader=python3
+Module=strip-trailing-whitespace
+IAge=3
+Name=Strip trailing whitespace
+Description=Ctrl-Shift-R to strip trailing whitespace from each line
+Authors=zb3
+Copyright=Copyright © 2019 zb3
+Website=http://www.gedit.org
+Version=3.34.0
