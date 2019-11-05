@@ -73,32 +73,26 @@ class StripWSViewActivatable(GObject.Object, Gedit.ViewActivatable):
         else:
             cur, end = buff.get_bounds()
 
-        space_start = cur.copy()
-        trailing_whitespace = False
-
-        char_count = end.get_offset() - cur.get_offset()
         lines_modified = 0
 
         buff.begin_user_action()
 
-        for _ in range(char_count):
-            ch = cur.get_char()
+        for line in range(buff.get_line_count()):
+            line_end = buff.get_iter_at_line(line)
+            line_end.forward_to_line_end()
+            space_start = line_end.copy()
+            has_whitespace = False
 
-            if ch in ('\r', '\n'):
-                if trailing_whitespace:
-                    buff.delete(space_start, cur)
-                    trailing_whitespace = False
-                    lines_modified += 1
+            while space_start.backward_char():
+                if space_start.get_char() in ' \t':
+                    has_whitespace = True
+                else:
+                    space_start.forward_char()
+                    break
 
-            elif ch in (' ', '\t'):
-                if not trailing_whitespace:
-                    trailing_whitespace = True
-                    space_start.assign(cur)
-
-            else:
-                trailing_whitespace = False
-
-            cur.forward_char()
+            if has_whitespace:
+                buff.delete(space_start, line_end)
+                lines_modified += 1
 
         buff.end_user_action()
 

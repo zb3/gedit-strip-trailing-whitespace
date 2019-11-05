@@ -24,4 +24,4 @@ class Statusbar():
         self.flash_timeout = 0
         return False
 
-        
+
