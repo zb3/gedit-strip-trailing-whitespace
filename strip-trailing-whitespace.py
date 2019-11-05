@@ -77,7 +77,7 @@ class StripWSViewActivatable(GObject.Object, Gedit.ViewActivatable):
 
         buff.begin_user_action()
 
-        for line in range(buff.get_line_count()):
+        for line in range(cur.get_line(), end.get_line()+1):
             line_end = buff.get_iter_at_line(line)
             line_end.forward_to_line_end()
             space_start = line_end.copy()
